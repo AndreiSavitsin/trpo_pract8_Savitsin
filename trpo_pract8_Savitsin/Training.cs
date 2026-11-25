@@ -1,44 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace trpo_pract8_Savitsin
 {
-    public class Training
+    public class Training : INotifyPropertyChanged
     {
-        DatePicker trainingDate;
-        string trainingType;
+        DateTime trainingDate = DateTime.Today;
+        string trainingType = string.Empty;
         int duration;
-        string workLoad;
-        string description;
+        string workLoad = string.Empty;
+        string description = string.Empty;
 
-        public DatePicker TrainingDate
+        public DateTime TrainingDate
         {
             get { return trainingDate; } 
-            set { trainingDate = value; }
+            set 
+            {
+                trainingDate = value;
+                OnPropertyChanged();
+            }
         }
         public string TrainingType
         {
             get { return trainingType; }
-            set { trainingType = value; }
+            set 
+            {
+                trainingType = value;
+                OnPropertyChanged();
+            }
         }
         public int Duration
         {
             get { return duration; } 
-            set {  duration = value; }
+            set 
+            {
+                duration = value;
+                OnPropertyChanged();
+            }
         }
         public string WorkLoad
         {
             get { return workLoad; }
-            set { workLoad = value; }
+            set 
+            {
+                workLoad = value;
+                OnPropertyChanged();
+            }
         }
         public string Description
         {
             get { return description; }
-            set { description = value; }
+            set 
+            { 
+                description = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string? propName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

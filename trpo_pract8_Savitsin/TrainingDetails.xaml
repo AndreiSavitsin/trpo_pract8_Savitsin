@@ -5,10 +5,99 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:trpo_pract8_Savitsin"
       mc:Ignorable="d" 
+      xmlns:validators="clr-namespace:trpo_pract8_Savitsin.ValidationRules"
+      Background="#F5F5F5"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="TrainingDetails">
+    
+    <Page.Resources>
+        <DataTemplate x:Key="ErrorTemplate">
+            <TextBlock Text="{Binding ErrorContent}" Foreground="Red" FontSize="12" TextWrapping="Wrap"/>
+        </DataTemplate>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#FF7F50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+    </Page.Resources>
 
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <Grid DockPanel.Dock="Left" Width="400">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="70" MaxHeight="100"/>
+                <RowDefinition Height="Auto" MinHeight="200"/>
+                <RowDefinition Height="Auto" MinHeight="60" MaxHeight="100"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="tbHeader" Grid.Row="0" Margin="5" VerticalAlignment="Center" FontSize="25" Foreground="#2A4D9B" Text="Создание тренировки"/>
+
+            <StackPanel Grid.Row="1">
+
+                <TextBlock Margin="5" FontSize="18" Text="Тип тренировки"/>
+                <ComboBox x:Name="cbTrainingType" FontSize="18" Margin="5" SelectedValuePath="Content">
+                    <ComboBox.SelectedValue>
+                        <Binding Path="TrainingType" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validators:EmptyFieldRule ValidatesOnTargetUpdated="True"/>
+                                <validators:TrainingTypeRule ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </ComboBox.SelectedValue>
+                    <ComboBoxItem Content="Силовая"/>
+                    <ComboBoxItem Content="Кардио"/>
+                    <ComboBoxItem Content="Функциональная"/>
+                    <ComboBoxItem Content="Интервальная"/>
+                    <ComboBoxItem Content="Восстановительная"/>
+                </ComboBox>
+                <ItemsControl Margin="5,0" ItemsSource="{Binding ElementName=cbTrainingType, Path=(Validation.Errors)}" ItemTemplate="{StaticResource ErrorTemplate}"/>
+
+                <TextBlock Margin="5" FontSize="18" Text="Дата тренировки"/>
+                <DatePicker x:Name="dpTrainingDate" FontSize="18" Margin="5">
+                    <DatePicker.SelectedDate>
+                        <Binding Path="TrainingDate" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validators:DateRule ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DatePicker.SelectedDate>
+                </DatePicker>
+                <ItemsControl Margin="5,0" ItemsSource="{Binding ElementName=dpTrainingDate, Path=(Validation.Errors)}" ItemTemplate="{StaticResource ErrorTemplate}"/>
+
+                <TextBlock Margin="5" FontSize="18" Text="Нагрузка"/>
+                <TextBox x:Name="tbWorkLoad" FontSize="18" Margin="5">
+                    <TextBox.Text>
+                        <Binding Path="WorkLoad" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validators:EmptyFieldRule ValidatesOnTargetUpdated="True"/>
+                                <validators:WorkLoadRule ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <ItemsControl Margin="5,0" ItemsSource="{Binding ElementName=tbWorkLoad, Path=(Validation.Errors)}" ItemTemplate="{StaticResource ErrorTemplate}"/>
+
+                <TextBlock Margin="5" FontSize="18" Text="Продолжительность"/>
+                <TextBox x:Name="tbDuration" FontSize="18" Margin="5">
+                    <TextBox.Text>
+                        <Binding Path="Duration" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validators:EmptyFieldRule ValidatesOnTargetUpdated="True"/>
+                                <validators:DurationRule ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <ItemsControl Margin="5,0" ItemsSource="{Binding ElementName=tbDuration, Path=(Validation.Errors)}" ItemTemplate="{StaticResource ErrorTemplate}"/>
+
+                <TextBlock Margin="5" FontSize="18" Text="Описание"/>
+                <TextBox FontSize="18" Margin="5" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </StackPanel>
+
+            <Button Grid.Row="2" Margin="5" Content="Сохранить" Click="btnSave_Click" HorizontalAlignment="Left" Width="150" FontSize="18" Height="50"/>
+
+        </Grid>
+    </DockPanel>
 </Page>
